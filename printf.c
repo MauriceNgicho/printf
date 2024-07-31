@@ -8,14 +8,14 @@
  */
 int print_string(const char *str)
 {
-    int count = 0;
+	int count = 0;
 
-    while (*str)
-    {
-        count += print_char(*str);
-        str++;
-    }
-    return (count);
+	while (*str)
+	{
+		count += print_char(*str);
+		str++;
+	}
+	return (count);
 }
 
 /**
@@ -26,7 +26,7 @@ int print_string(const char *str)
  */
 int print_char(char c)
 {
-    return (write(1, &c, 1));
+	return (write(1, &c, 1));
 }
 
 /**
@@ -37,75 +37,74 @@ int print_char(char c)
  */
 int print_int(int n)
 {
-    int count = 0;
-    unsigned int num;
+	int count = 0;
+	unsigned int num;
 
-    if (n < 0)
-    {
-        count += print_char('-');
-        num = -n;
-    }
-    else
-    {
-        num = n;
-    }
+	if (n < 0)
+	{
+		count += print_char('-');
+		num = -n;
+	}
+	else
+	{
+		num = n;
+	}
 
-    if (num / 10)
-    {
-        count += print_int(num / 10);
-    }
-    count += print_char((num % 10) + '0');
+	if (num / 10)
+	{
+		count += print_int(num / 10);
+	}
+	count += print_char((num % 10) + '0');
 
-    return (count);
+	return (count);
 }
 
 /**
  * _printf - Produces output according to a format
  * @format: A character string composed of zero or more directives
  *
- * Return: The number of characters printed (excluding the null byte used to end output to strings)
+ * Return: The number of characters printed.
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int count = 0;
-    int i;
+	va_list args;
+	int count = 0;
+	int i;
 
-    va_start(args, format);
+	va_start(args, format);
 
-    for (i = 0; format && format[i] != '\0'; i++)
-    {
-        if (format[i] == '%')
-        {
-            i++;
-            if (format[i] == 'c')
-            {
-                count += print_char(va_arg(args, int));
-            }
-            else if (format[i] == 's')
-            {
-                count += print_string(va_arg(args, char *));
-            }
-            else if (format[i] == '%')
-            {
-                count += print_char('%');
-            }
-            else if (format[i] == 'd' || format[i] == 'i')
-            {
-                count += print_int(va_arg(args, int));
-            }
-            else
-            {
-                count += print_char('%');
-                count += print_char(format[i]);
-            }
-        }
-        else
-        {
-            count += print_char(format[i]);
-        }
-    }
-
-    va_end(args);
-    return (count);
+	for (i = 0; format && format[i] != '\0'; i++)
+	{
+		if (format[i] == '%')
+		{
+			i++;
+			if (format[i] == 'c')
+			{
+				count += print_char(va_arg(args, int));
+			}
+			else if (format[i] == 's')
+			{
+				count += print_string(va_arg(args, char *));
+			}
+			else if (format[i] == '%')
+			{
+				count += print_char('%');
+			}
+			else if (format[i] == 'd' || format[i] == 'i')
+			{
+				count += print_int(va_arg(args, int));
+			}
+			else
+			{
+				count += print_char('%');
+				count += print_char(format[i]);
+			}
+		}
+		else
+		{
+			count += print_char(format[i]);
+		}
+	}
+	va_end(args);
+	return (count);
 }
