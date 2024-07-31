@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stddef.h>
 
 /**
  * print_string - Prints a string to stdout
@@ -9,6 +10,11 @@
 int print_string(const char *str)
 {
 	int count = 0;
+
+	if (str == NULL)
+	{
+		str = "(null)";
+	}
 
 	while (*str)
 	{
@@ -60,6 +66,40 @@ int print_int(int n)
 }
 
 /**
+ * specifiers_format - Handles format specifiers
+ * @format: Pointer to the format string
+ * @args: Variable argument list
+ *
+ * Return: The number of characters printed
+ */
+int specifiers_format(const char **format, va_list args)
+{
+	int count = 0;
+
+	switch (**format)
+	{
+		case 'c':
+			count += print_char(va_arg(args, int));
+			break;
+		case 's':
+			count += print_string(va_arg(args, char *));
+			break;
+		case '%':
+			count += print_char('%');
+			break;
+		case 'd':
+		case 'i':
+			count += print_char(va_arg(args, int));
+			break;
+		default:
+			count += print_char('%');
+			count += print_char(**format);
+
+			break;
+	}
+	return (count);
+}
+/**
  * _printf - Produces output according to a format
  * @format: A character string composed of zero or more directives
  *
@@ -69,41 +109,24 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	int count = 0;
-	int i;
+
+	if (format == NULL)
+		return (-1);
 
 	va_start(args, format);
 
-	for (i = 0; format && format[i] != '\0'; i++)
+	while (*format)
 	{
-		if (format[i] == '%')
+		if (*format == '%')
 		{
-			i++;
-			if (format[i] == 'c')
-			{
-				count += print_char(va_arg(args, int));
-			}
-			else if (format[i] == 's')
-			{
-				count += print_string(va_arg(args, char *));
-			}
-			else if (format[i] == '%')
-			{
-				count += print_char('%');
-			}
-			else if (format[i] == 'd' || format[i] == 'i')
-			{
-				count += print_int(va_arg(args, int));
-			}
-			else
-			{
-				count += print_char('%');
-				count += print_char(format[i]);
-			}
+			format++;
+			count += specifiers_format(&format, args);
 		}
 		else
 		{
-			count += print_char(format[i]);
+			count += print_char(*format);
 		}
+		format++;
 	}
 	va_end(args);
 	return (count);
