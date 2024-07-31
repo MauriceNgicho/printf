@@ -60,18 +60,16 @@ int print_int(int n)
 }
 
 /**
- * _printf - Produces output according to a format
- * @format: A character string composed of zero or more directives
+ * handle_format - Handles the format specifiers in the format string
+ * @format: The format string
+ * @args: The argument list
  *
- * Return: The number of characters printed.
+ * Return: The number of characters printed
  */
-int _printf(const char *format, ...)
+int handle_format(const char *format, va_list args)
 {
-	va_list args;
-	int count = 0;
-	int i;
+	int count = 0, i;
 
-	va_start(args, format);
 	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] == '%')
@@ -104,6 +102,26 @@ int _printf(const char *format, ...)
 			count += print_char(format[i]);
 		}
 	}
+	return (count);
+}
+
+/**
+ * _printf - Produces output according to a format
+ * @format: A character string composed of zero or more directives
+ *
+ * Return: The number of characters printed
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int count = 0;
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(args, format);
+	count = handle_format(format, args);
 	va_end(args);
+
 	return (count);
 }
