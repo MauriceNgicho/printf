@@ -66,7 +66,7 @@ int print_int(int n)
  *
  * Return: The number of characters printed
  */
-int handle_format(const char *format, va_list args)
+int handle_format(const char **format, va_list args)
 {
 	int count = 0, i;
 
