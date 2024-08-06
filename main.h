@@ -3,13 +3,14 @@
 
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdlib.h>
 
+/* Function prototypes */
 int _printf(const char *format, ...);
-int print_char(char c);
-int print_string(const char *str);
-int print_int(int n);
-int handle_format(const char **format, va_list args);
+int _putchar(char c);
+int print_char(va_list args);
+int print_string(va_list args);
+int print_percent(va_list args);
+int print_int(va_list args);
 
 #endif /* MAIN_H */
-
-
